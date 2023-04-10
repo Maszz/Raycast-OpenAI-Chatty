@@ -3,6 +3,8 @@ OpenAI Chatty is a Raycast extension that provides seamless access to the OpenAI
 The extension gives you a simple way to chat with variety of openai models.
 
 ![Chat view](metadata/openai_chatty-2.png)
+![Form view](metadata/openai_chatty-6.png)
+
 
 
 # Features
