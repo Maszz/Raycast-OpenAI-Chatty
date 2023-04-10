@@ -83,7 +83,7 @@ export default function Ask(props: { conversation?: Conversation }) {
   }, [models.selectedModelName]);
   return (
     <List
-      searchBarPlaceholder={"Search for a conversation..."}
+      searchBarPlaceholder={"Ask any thing you want to know..."}
       searchText={textPrompt}
       isShowingDetail={chats.data.length > 0 ? true : false}
       // onSearchTextChange={(text) => setTextPrompt(text)}

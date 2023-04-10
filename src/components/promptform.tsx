@@ -47,11 +47,11 @@ const PropmtForm: FC<PromptFormProps> = ({ initQuestion, chats, models, conversa
         </ActionPanel>
       }
     >
-      <Form.Description text="This is your AI playground" />
+      <Form.Description text="Ask Any thing you want to know..." />
       <Form.TextArea
         id="prompt"
         title="Prompt"
-        placeholder="Enter your prompt"
+        placeholder="Enter your want to know..."
         value={textPrompt}
         error={promptError}
         onChange={(value) => {
@@ -72,7 +72,7 @@ const PropmtForm: FC<PromptFormProps> = ({ initQuestion, chats, models, conversa
       />
       <Form.Description text={`Prompt token count: ${numTokensPrompt}`} />
       <Form.Separator />
-      <Form.Description text="These are the model parameters" />
+      <Form.Description text="Choose a model" />
       <Form.Dropdown
         id="model"
         title="AI Model"
