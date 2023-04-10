@@ -11,6 +11,7 @@ The extension gives you a simple way to chat with variety of openai models.
 The OpenAI API integration offers several features for interacting with your preferred language model. These include
 
 - Asking any question or prompt of your choice and receiving a response from your preferred model.
+- Toning responses, Enhance model responses with creative, precise, and balanced tone (Predefined model parameters)
 - Access to a history view that displays past chat interactions, making it easy to review previous conversations.
 - A conversation view that groups related questions and responses together for easier reference.
 - A toggle to switch between displaying or hiding chat details as desired.
