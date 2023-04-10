@@ -154,3 +154,10 @@ export interface HandleTextCompletion {
   model: string;
   modelTone: ModelTone;
 }
+export interface AnswerMetaProps {
+  chat: Chat;
+  answerToken: string;
+  questionToken: string;
+  sumToken: string;
+  date: string;
+}
