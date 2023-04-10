@@ -1,4 +1,13 @@
-import type { Chat, ChatHook, CreateChatCompletionDeltaResponse, CreateCompletionResponse } from "../types";
+import type {
+  Chat,
+  ChatHook,
+  CreateChatCompletionDeltaResponse,
+  CreateCompletionResponse,
+  ModelTone,
+  AskParams,
+  HandleChatCompletion,
+  HandleTextCompletion,
+} from "../types";
 import { useHistory } from "./useHistory";
 import { useOpenAi } from "./useOpenAi";
 import { clearSearchBar, showToast, Toast, getPreferenceValues } from "@raycast/api";
@@ -6,6 +15,7 @@ import { ChatCompletionRequestMessageRoleEnum } from "openai";
 import { useState, FC, useCallback, useMemo, useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { CHAT_COMPLETION_SUPPORT } from "./useModel";
+
 export const useChat = <T extends Chat>(props: T[]): ChatHook => {
   const [data, setData] = useState<Chat[]>(props);
   const [selectedChatId, setSelectedChatId] = useState<string | null>(null);
@@ -18,7 +28,8 @@ export const useChat = <T extends Chat>(props: T[]): ChatHook => {
     }>().useStream;
   });
 
-  const ask = async (question: string, model: string, conversationId: string) => {
+  const ask = async (params: AskParams) => {
+    const { question, model, conversationId, modelTone } = params;
     clearSearchBar();
     setLoading(true);
     const toast = await showToast({
@@ -33,6 +44,7 @@ export const useChat = <T extends Chat>(props: T[]): ChatHook => {
       created_at: new Date().toISOString(),
       model: model,
       conversationId: conversationId,
+      tone: modelTone,
     };
 
     setData((prev) => {
@@ -48,12 +60,20 @@ export const useChat = <T extends Chat>(props: T[]): ChatHook => {
       console.log("Invoke Chat Completion");
       const params = prepairPayload(data.reverse(), question);
 
-      await handleChatCompletion(params, toast, chat, model);
+      // await handleChatCompletion(params, toast, chat, model, modelTone);
+      await handleChatCompletion({ conversation: params, toast, chat, model, modelTone });
     } else {
       //   console.log("other", model);
       console.log("Invoke Text Completion");
       const params = question;
-      await handlerCompletion(params, toast, chat, model);
+      // await handlerCompletion(params, toast, chat, model, modelTone);
+      await handlerCompletion({
+        question: params,
+        toast,
+        chat,
+        model,
+        modelTone,
+      });
     }
   };
 
@@ -61,17 +81,12 @@ export const useChat = <T extends Chat>(props: T[]): ChatHook => {
     setData([]);
   }, [setData]);
 
-  const handleChatCompletion = async (
-    params: {
-      role: ChatCompletionRequestMessageRoleEnum;
-      content: string;
-    }[],
-    toast: Toast,
-    chat: Chat,
-    model: string
-  ) => {
+  const handleChatCompletion = async (params: HandleChatCompletion) => {
+    const { toast, model, modelTone, conversation } = params;
+    let chat = params.chat;
+
     try {
-      const res = await chatCompletion(params, useStream, model);
+      const res = await chatCompletion(conversation, useStream, model, modelTone);
       if (useStream) {
         (res.data as any).on("data", (data: CreateChatCompletionDeltaResponse) => {
           const lines = data
@@ -149,9 +164,11 @@ export const useChat = <T extends Chat>(props: T[]): ChatHook => {
     }
   };
 
-  const handlerCompletion = async (question: string, toast: Toast, chat: Chat, model: string) => {
+  const handlerCompletion = async (params: HandleTextCompletion) => {
+    const { toast, model, modelTone, question } = params;
+    let chat = params.chat;
     try {
-      const res = await textCompletion(question, model, useStream);
+      const res = await textCompletion(question, model, useStream, modelTone);
       if (useStream) {
         (res.data as any).on("data", (data: CreateCompletionResponse) => {
           const lines = data

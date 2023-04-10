@@ -50,7 +50,13 @@ export const ChatListItem: FC<ChatListItemProps> = ({
                 style: Toast.Style.Failure,
               });
             } else {
-              chats.ask(question, models.selectedModelName, conversation.id);
+              chats.ask({
+                question,
+                model: models.selectedModelName,
+                conversationId: conversation.id,
+                modelTone: models.modelTone,
+              });
+              // chats.ask(question, models.selectedModelName, conversation.id, models.modelTone);
             }
           }}
         />
@@ -95,7 +101,6 @@ export const ChatListItem: FC<ChatListItemProps> = ({
   return (
     <List.Section title="Results" subtitle={chats.data.length.toLocaleString()}>
       {sortedChat.map((chat, i) => {
-        // const markdown = `## ${chat.question}\n\n${chat.answer}`;
         return (
           <List.Item
             id={chat.id}
@@ -103,9 +108,6 @@ export const ChatListItem: FC<ChatListItemProps> = ({
             accessories={[{ text: `#${chats.data.length - i}` }]}
             title={chat.question || "No question"}
             detail={chat && <AnswerDetailView chat={chat} isHideMeta={isHideMeta} />}
-            // detail={
-            //   <List.Item.Detail markdown={}/>
-            // }
             actions={chats.isLoading ? undefined : getActionPanel(chat)}
           />
         );

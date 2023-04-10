@@ -1,10 +1,10 @@
 import { encode } from "../libs/encoder";
-import { Chat, Question } from "../types";
+import { Chat, ModelTone, Question } from "../types";
 import { getPreferenceValues } from "@raycast/api";
 import { Configuration, OpenAIApi, ChatCompletionRequestMessageRoleEnum } from "openai";
 import type { ChatCompletionRequestMessage } from "openai";
 import { useCallback, useMemo, useState } from "react";
-
+import { ModelToneMap } from "./useModel";
 export const useOpenAi = () => {
   const [openAi] = useState(() => {
     const apiKey = getPreferenceValues<{
@@ -19,14 +19,20 @@ export const useOpenAi = () => {
   const chatCompletion = async (
     messages: { role: ChatCompletionRequestMessageRoleEnum; content: string }[],
     useStream: boolean,
-    model: string
+    model: string,
+    modelTone: ModelTone
   ) => {
+    const { temperature, top_p, presence_penalty, frequency_penalty } = ModelToneMap[modelTone];
     const res = await openAi.createChatCompletion(
       {
         model: model,
-        temperature: 1,
+        // temperature: 1,
         messages: messages,
         stream: useStream,
+        temperature,
+        top_p,
+        presence_penalty,
+        frequency_penalty,
       },
       {
         responseType: useStream ? "stream" : undefined,
@@ -35,13 +41,18 @@ export const useOpenAi = () => {
     return res;
   };
 
-  const textCompletion = async (prompt: string, model: string, useStream: boolean) => {
+  const textCompletion = async (prompt: string, model: string, useStream: boolean, modelTone: ModelTone) => {
+    const { temperature, top_p, presence_penalty, frequency_penalty } = ModelToneMap[modelTone];
+
     const res = await openAi.createCompletion(
       {
         model: model,
         prompt: prompt,
-        temperature: 1,
         stream: useStream,
+        temperature,
+        top_p,
+        presence_penalty,
+        frequency_penalty,
       },
       {
         responseType: useStream ? "stream" : undefined,

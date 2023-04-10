@@ -5,7 +5,7 @@ import type { AnswerDetailViewProps } from "../types";
 
 import { FC } from "react";
 
-export const AnswerDetailView: FC<AnswerDetailViewProps> = ({ chat, markdown, isHideMeta }) => {
+export const AnswerDetailView: FC<AnswerDetailViewProps> = ({ chat, isHideMeta }) => {
   const questionToken = encode(chat.question).length;
   const answerToken = encode(chat.answer).length;
   return (
@@ -17,6 +17,7 @@ export const AnswerDetailView: FC<AnswerDetailViewProps> = ({ chat, markdown, is
             <List.Item.Detail.Metadata.TagList title="Model">
               <List.Item.Detail.Metadata.TagList.Item text={chat.model} color={"#eed535"} />
             </List.Item.Detail.Metadata.TagList>
+            <List.Item.Detail.Metadata.Label title={"Tone"} icon="model" text={chat.tone} />
             <List.Item.Detail.Metadata.Label title={"Date"} text={new Date(chat.created_at).toLocaleString()} />
             <List.Item.Detail.Metadata.Label
               title={"Question Token Count"}

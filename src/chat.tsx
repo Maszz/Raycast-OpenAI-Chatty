@@ -45,7 +45,19 @@ export default function Ask(props: { conversation?: Conversation }) {
                 style: Toast.Style.Failure,
               });
             } else {
-              chats.ask(question, models.selectedModelName, conversation.id);
+              // {
+              //   question:question,
+              //   model:models.selectedModelName,
+              //   conversationId:conversation.id,
+              //   modelTone:models.modelTone
+              // }
+              // chats.ask(question, models.selectedModelName, conversation.id, models.modelTone);
+              chats.ask({
+                question,
+                model: models.selectedModelName,
+                conversationId: conversation.id,
+                modelTone: models.modelTone,
+              });
             }
           }}
         />

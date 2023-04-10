@@ -1,10 +1,10 @@
 import { encode } from "../libs/encoder";
 // import * as infoMessages from "../info-messages";
-import type { ChatHook, ModelHook, PromptFormProps } from "../types";
+import type { ChatHook, ModelHook, ModelTone, PromptFormProps } from "../types";
 import { Conversation } from "../types";
 import { Form, ActionPanel, Action, showToast, getPreferenceValues, List, useNavigation, Toast } from "@raycast/api";
 import { FC, useState } from "react";
-
+import { ModelToneList } from "../hooks/useModel";
 type Values = {
   prompt: string;
   model: string;
@@ -22,7 +22,13 @@ const PropmtForm: FC<PromptFormProps> = ({ initQuestion, chats, models, conversa
     if (Number(numTokensPrompt) + models.maxTokenOffset > models.maxModelTokens) {
       showToast({ title: "exceed max token", message: "Please enter a shorter question", style: Toast.Style.Failure });
     } else {
-      chats.ask(values.prompt, models.selectedModelName, conversation.id);
+      // chats.ask(values.prompt, models.selectedModelName, conversation.id, models.modelTone);
+      chats.ask({
+        question: values.prompt,
+        model: models.selectedModelName,
+        conversationId: conversation.id,
+        modelTone: models.modelTone,
+      });
       pop();
     }
   }
@@ -86,6 +92,19 @@ const PropmtForm: FC<PromptFormProps> = ({ initQuestion, chats, models, conversa
       >
         {models.data.map((key) => {
           return <Form.Dropdown.Item key={key.name} value={key.name} title={key.name} />;
+        })}
+      </Form.Dropdown>
+      <Form.Description text="Choose tone of response" />
+      <Form.Dropdown
+        id="tone"
+        title="tone"
+        onChange={(newValue: string) => {
+          models.setModelTone(newValue as ModelTone);
+        }}
+        defaultValue={models.modelTone}
+      >
+        {ModelToneList.map((key) => {
+          return <Form.Dropdown.Item key={key} value={key} title={key} />;
         })}
       </Form.Dropdown>
     </Form>

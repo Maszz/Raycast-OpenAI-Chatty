@@ -2,7 +2,7 @@ import { Conversation } from "../types";
 import { LocalStorage, showToast, Toast } from "@raycast/api";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
-export function useConversations() {
+export const useConversations = () => {
   const [data, setData] = useState<Conversation[]>([]);
   const [isLoading, setLoading] = useState<boolean>(true);
   //   const isAutoSaveConversation = useAutoSaveConversation();
@@ -78,4 +78,4 @@ export function useConversations() {
     () => ({ data, isLoading, add, update, remove, clear }),
     [data, isLoading, add, update, remove, clear]
   );
-}
+};
