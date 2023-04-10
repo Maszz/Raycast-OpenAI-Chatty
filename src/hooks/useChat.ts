@@ -5,7 +5,7 @@ import { clearSearchBar, showToast, Toast, getPreferenceValues } from "@raycast/
 import { ChatCompletionRequestMessageRoleEnum } from "openai";
 import { useState, FC, useCallback, useMemo, useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
-
+import { CHAT_COMPLETION_SUPPORT } from "./useModel";
 export const useChat = <T extends Chat>(props: T[]): ChatHook => {
   const [data, setData] = useState<Chat[]>(props);
   const [selectedChatId, setSelectedChatId] = useState<string | null>(null);
@@ -18,9 +18,8 @@ export const useChat = <T extends Chat>(props: T[]): ChatHook => {
     }>().useStream;
   });
 
-  async function ask(question: string, model: string, conversationId: string) {
+  const ask = async (question: string, model: string, conversationId: string) => {
     clearSearchBar();
-
     setLoading(true);
     const toast = await showToast({
       title: "Getting your answer...",
@@ -44,23 +43,25 @@ export const useChat = <T extends Chat>(props: T[]): ChatHook => {
       setSelectedChatId(chat.id);
     }, 50);
 
-    if (model == "gpt-3.5-turbo") {
+    if (CHAT_COMPLETION_SUPPORT.includes(model)) {
       //   console.log("gpt-3.5-turbo");
+      console.log("Invoke Chat Completion");
       const params = prepairPayload(data.reverse(), question);
 
-      await handleChatResponse(params, toast, chat, model);
+      await handleChatCompletion(params, toast, chat, model);
     } else {
       //   console.log("other", model);
+      console.log("Invoke Text Completion");
       const params = question;
-      await handlerCompletionResponse(params, toast, chat, model);
+      await handlerCompletion(params, toast, chat, model);
     }
-  }
+  };
 
   const clear = useCallback(async () => {
     setData([]);
   }, [setData]);
 
-  const handleChatResponse = async (
+  const handleChatCompletion = async (
     params: {
       role: ChatCompletionRequestMessageRoleEnum;
       content: string;
@@ -148,7 +149,7 @@ export const useChat = <T extends Chat>(props: T[]): ChatHook => {
     }
   };
 
-  const handlerCompletionResponse = async (question: string, toast: Toast, chat: Chat, model: string) => {
+  const handlerCompletion = async (question: string, toast: Toast, chat: Chat, model: string) => {
     try {
       const res = await textCompletion(question, model, useStream);
       if (useStream) {

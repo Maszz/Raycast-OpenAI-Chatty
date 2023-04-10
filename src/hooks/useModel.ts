@@ -9,7 +9,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 export const DEFAULT_MODEL_NAME = default_model;
 export const DEFAULT_MODEL_TOKENS_OFFSET = default_model_token_offset;
 export const modelList = model as Model[];
-
+export const CHAT_COMPLETION_SUPPORT = ["gpt-3.5-turbo", "gpt-4"];
 export const useModel = (selectedModel?: string): ModelHook => {
   const [data, setData] = useState<Model[]>(modelList);
   const [selectedModelName, setSelectedModelName] = useState<string>(selectedModel || DEFAULT_MODEL_NAME);
