@@ -17,21 +17,21 @@
       "name": "chat",
       "title": "OpenAI Chat",
       "subtitle": "OpenAI Chatty",
-      "description": "list ChatGPT via Raycast",
+      "description": "Chat with OpenAI API",
       "mode": "view"
     },
     {
       "name": "conversationList",
       "title": "Conversation List",
       "subtitle": "OpenAI Chatty",
-      "description": "History of your conversation with gpt",
+      "description": "History of your conversation with OpenAI API",
       "mode": "view"
     },
     {
       "name": "history",
       "title": "History",
       "subtitle": "OpenAI Chatty",
-      "description": "History of your chat with gpt",
+      "description": "History of your chat with OpenAI API",
       "mode": "view"
     }
   ],
