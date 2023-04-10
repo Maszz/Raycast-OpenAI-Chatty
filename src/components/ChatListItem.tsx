@@ -56,7 +56,6 @@ export const ChatListItem: FC<ChatListItemProps> = ({
                 conversationId: conversation.id,
                 modelTone: models.modelTone,
               });
-              // chats.ask(question, models.selectedModelName, conversation.id, models.modelTone);
             }
           }}
         />

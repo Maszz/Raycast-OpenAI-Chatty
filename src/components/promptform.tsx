@@ -11,7 +11,7 @@ type Values = {
 };
 
 const PropmtForm: FC<PromptFormProps> = ({ initQuestion, chats, models, conversation }) => {
-  const [textPrompt, setTextPrompt] = useState(initQuestion || "");
+  const [textPrompt, setTextPrompt] = useState<string>(initQuestion || "");
 
   const [promptError, setPromptError] = useState<string | undefined>();
   const [numTokensPrompt, setNumTokensPrompt] = useState<number | undefined>(0);

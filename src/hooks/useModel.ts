@@ -3,20 +3,15 @@ import { model, default_model_token_offset, default_model } from "../../assets/m
 // import { modelList } from "../ModelData";
 import { Model } from "../types";
 import { ModelHook } from "../types";
-import { List, LocalStorage, showToast, Toast } from "@raycast/api";
+import { List, LocalStorage, showToast, Toast, getPreferenceValues } from "@raycast/api";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { ModelTone } from "../types";
+import { ModelTone, ModelParams } from "../types";
 export const DEFAULT_MODEL_NAME = default_model;
 export const DEFAULT_MODEL_TOKENS_OFFSET = default_model_token_offset;
 export const modelList = model as Model[];
 export const CHAT_COMPLETION_SUPPORT = ["gpt-3.5-turbo", "gpt-4"];
-export type ModelParams = {
-  temperature: number;
-  top_p: number;
-  presence_penalty: number;
-  frequency_penalty: number;
-};
 export const ModelToneList = ["creative", "precise", "balanced", "default"] as ModelTone[];
+
 export const ModelToneMap: Record<ModelTone, ModelParams> = {
   creative: {
     temperature: 0.9,

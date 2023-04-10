@@ -5,14 +5,11 @@ import { Configuration, OpenAIApi, ChatCompletionRequestMessageRoleEnum } from "
 import type { ChatCompletionRequestMessage } from "openai";
 import { useCallback, useMemo, useState } from "react";
 import { ModelToneMap } from "./useModel";
+import { usePreference } from "./usePreference";
 export const useOpenAi = () => {
+  const apiKey = usePreference<string>("openAiApiKey");
   const [openAi] = useState(() => {
-    const apiKey = getPreferenceValues<{
-      openAiApiKey: string;
-    }>().openAiApiKey;
-
     const config = new Configuration({ apiKey });
-
     return new OpenAIApi(config);
   });
 

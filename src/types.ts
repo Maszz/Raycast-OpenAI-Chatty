@@ -1,6 +1,11 @@
 import type { Keyboard, Toast } from "@raycast/api";
 import type { ChatCompletionRequestMessageRoleEnum } from "openai";
-
+export interface Preference {
+  openAiApiKey: string;
+  useStream: boolean;
+}
+export type PreferenceKey = keyof Preference;
+export type ModelType = "gpt-3" | "gpt-3.5";
 export interface AskParams {
   question: string;
   model: string;
@@ -8,6 +13,12 @@ export interface AskParams {
   modelTone: ModelTone;
 }
 export type ModelTone = "creative" | "precise" | "balanced" | "default";
+export type ModelParams = {
+  temperature: number;
+  top_p: number;
+  presence_penalty: number;
+  frequency_penalty: number;
+};
 export interface Question {
   id: string;
   question: string;
@@ -20,7 +31,7 @@ export interface Chat extends Question {
   tone: ModelTone;
 }
 export interface Model {
-  type: "gpt-3" | "gpt-3.5";
+  type: ModelType;
   name: string;
   max_tokens: number;
 }

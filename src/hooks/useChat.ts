@@ -15,18 +15,14 @@ import { ChatCompletionRequestMessageRoleEnum } from "openai";
 import { useState, FC, useCallback, useMemo, useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { CHAT_COMPLETION_SUPPORT } from "./useModel";
-
+import { usePreference } from "./usePreference";
 export const useChat = <T extends Chat>(props: T[]): ChatHook => {
   const [data, setData] = useState<Chat[]>(props);
   const [selectedChatId, setSelectedChatId] = useState<string | null>(null);
   const [isLoading, setLoading] = useState<boolean>(false);
-  const { chatCompletion, prepairPayload, openAi, textCompletion } = useOpenAi();
+  const { chatCompletion, prepairPayload, textCompletion } = useOpenAi();
   const history = useHistory();
-  const [useStream] = useState<boolean>(() => {
-    return getPreferenceValues<{
-      useStream: boolean;
-    }>().useStream;
-  });
+  const useStream = usePreference<boolean>("useStream");
 
   const ask = async (params: AskParams) => {
     const { question, model, conversationId, modelTone } = params;

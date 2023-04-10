@@ -19,7 +19,6 @@ export function useHistory() {
 
   useEffect(() => {
     LocalStorage.setItem("history", JSON.stringify(data));
-    // console.log("history", data);
   }, [data]);
 
   const add = useCallback(
