@@ -74,7 +74,7 @@ All preferences properties list that can be customize through `Raycast Settings 
 
 - Import Extension 
 ```
-Import extension -> select extension folder 
+Import extension -> select extension folder  (**You need to import the extension before build it.)
 ```
 
 - Install a node module 
