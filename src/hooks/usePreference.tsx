@@ -9,5 +9,6 @@ export const usePreference = <T extends Preference[keyof Preference]>(key: Prefe
       useStream: preference.useStream || false,
     };
   });
+
   return preference[key] as T;
 };
